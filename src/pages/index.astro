@@ -1,0 +1,131 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import TerminalHero from '../components/TerminalHero.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { getCollection } from 'astro:content';
+
+const allProjects = await getCollection('projects');
+const featured = allProjects
+  .filter(p => p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+---
+<BaseLayout title="Anil Atasoy — Systems Software Engineer">
+  <Nav active="home" />
+
+  <main>
+    <div class="container">
+
+      <section class="hero">
+        <div class="hero-tag">systems software engineer</div>
+        <TerminalHero />
+        <div class="hero-links">
+          <a href="/projects" class="btn btn-primary">view projects</a>
+          <a href="https://github.com/anilatasoyy" class="btn btn-ghost" target="_blank" rel="noopener">github</a>
+          <a href="https://linkedin.com/in/anil-atasoy" class="btn btn-ghost" target="_blank" rel="noopener">linkedin</a>
+        </div>
+      </section>
+
+      <section id="about">
+        <div class="section-label">about</div>
+        <p style="font-size: 0.925rem; color: var(--text-muted); line-height: 1.8; max-width: 580px; margin-bottom: 20px;">
+          Currently at <span style="color: var(--text);">Havelsan</span>, working on
+          real-time flight simulation software in C++. My day-to-day involves
+          physics integration, state synchronization, and keeping simulation loops
+          deterministic and fast.
+        </p>
+        <p style="font-size: 0.925rem; color: var(--text-muted); line-height: 1.8; max-width: 580px;">
+          Outside of work I explore low-latency systems — order book engines,
+          lock-free data structures, and systems closer to the metal. Targeting
+          roles in HFT infrastructure or robotics/embedded systems where
+          microseconds are a design constraint.
+        </p>
+      </section>
+
+      <section id="projects">
+        <div class="section-label">selected projects</div>
+        <div class="project-grid">
+          {featured.map(project => (
+            <div class="project-card">
+              <div>
+                <div class="project-name">{project.data.title}</div>
+                <div class="project-desc">{project.data.description}</div>
+                <div class="project-tags">
+                  {project.data.tags.map(tag => (
+                    <span class="tag">{tag}</span>
+                  ))}
+                </div>
+              </div>
+              {project.data.github && (
+                <a href={project.data.github} class="project-link" target="_blank" rel="noopener">
+                  github →
+                </a>
+              )}
+            </div>
+          ))}
+        </div>
+        <div style="margin-top: 20px;">
+          <a href="/projects" style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);">
+            all projects →
+          </a>
+        </div>
+      </section>
+
+      <section id="skills">
+        <div class="section-label">skills</div>
+        <div class="skills-grid">
+          <div class="skill-group">
+            <h3>Languages</h3>
+            <ul class="skill-list">
+              <li>C++ (17/20)</li>
+              <li>C</li>
+              <li>Python</li>
+              <li>Bash</li>
+            </ul>
+          </div>
+          <div class="skill-group">
+            <h3>Systems</h3>
+            <ul class="skill-list">
+              <li>Low-latency design</li>
+              <li>Real-time systems</li>
+              <li>Lock-free data structures</li>
+              <li>Memory optimization</li>
+            </ul>
+          </div>
+          <div class="skill-group">
+            <h3>Focus</h3>
+            <ul class="skill-list">
+              <li>Flight simulation</li>
+              <li>HFT infrastructure</li>
+              <li>Embedded systems</li>
+              <li>Real-time systems</li>
+            </ul>
+          </div>
+          <div class="skill-group">
+            <h3>Tools</h3>
+            <ul class="skill-list">
+              <li>Linux / GCC / Clang</li>
+              <li>CMake</li>
+              <li>Perf / Valgrind</li>
+              <li>Git</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <div class="section-label">contact</div>
+        <p style="font-size: 0.925rem; color: var(--text-muted); margin-bottom: 28px; max-width: 480px;">
+          Open to opportunities in low-latency systems, HFT infrastructure, and
+          robotics/embedded roles. Reach out directly.
+        </p>
+        <ContactForm />
+      </section>
+
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>

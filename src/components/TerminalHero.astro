@@ -1,0 +1,56 @@
+---
+---
+<div class="terminal-block" id="terminal-hero" aria-label="Terminal animation">
+  <span class="line"><span class="prompt" id="t-prompt"></span><span id="t-cmd"></span><span class="cursor" id="t-cursor-1"></span></span>
+  <span class="line output" id="t-line-1" style="opacity:0"></span>
+  <span class="line output" id="t-line-2" style="opacity:0"></span>
+  <span class="line output" id="t-line-3" style="opacity:0"></span>
+  <span class="line output" id="t-line-4" style="opacity:0"></span>
+  <span class="line" id="t-final" style="opacity:0"><span class="prompt">$ </span><span class="cursor"></span></span>
+</div>
+
+<script>
+  const PROMPT = '$ ';
+  const CMD = './init --engineer="Anil Atasoy"';
+  const LINES = [
+    '> Loading 3 years C++ @ Havelsan...',
+    '> Systems: flight simulation, matching engines',
+    '> Focus:   low-latency, real-time, embedded',
+    '> Status:  open to new opportunities',
+  ];
+
+  const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
+
+  async function type(el: HTMLElement, text: string, speed = 38) {
+    for (const ch of text) {
+      el.textContent += ch;
+      await sleep(speed + Math.random() * 20);
+    }
+  }
+
+  async function run() {
+    const prompt = document.getElementById('t-prompt')!;
+    const cmd = document.getElementById('t-cmd')!;
+    const cursor1 = document.getElementById('t-cursor-1')!;
+
+    await sleep(400);
+    prompt.textContent = PROMPT;
+    await type(cmd, CMD, 42);
+    await sleep(180);
+    cursor1.style.display = 'none';
+
+    for (let i = 0; i < LINES.length; i++) {
+      const el = document.getElementById(`t-line-${i + 1}`) as HTMLElement;
+      await sleep(120);
+      el.style.opacity = '1';
+      el.textContent = '';
+      await type(el, LINES[i], 22);
+    }
+
+    await sleep(200);
+    const final = document.getElementById('t-final')!;
+    final.style.opacity = '1';
+  }
+
+  run();
+</script>

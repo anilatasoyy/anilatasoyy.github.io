@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { getCollection, render } from 'astro:content';
+
+const allProjects = await getCollection('projects');
+const sorted = allProjects.sort((a, b) => a.data.order - b.data.order);
+---
+<BaseLayout title="Projects — Anil Atasoy" description="C++ systems projects — order books, low-latency tools, simulation work.">
+  <Nav active="projects" />
+
+  <main>
+    <div class="container">
+
+      <div class="page-hero">
+        <div class="section-label">projects</div>
+        <h1>Things I've built.</h1>
+        <p>Systems work, low-latency experiments, and side projects. More added as I go.</p>
+      </div>
+
+      <section>
+        {sorted.map(async project => {
+          const { Content } = await render(project);
+          return (
+            <div class="project-full">
+              <div class="project-full-header">
+                <span class="project-full-name">{project.data.title}</span>
+                <div class="project-full-links">
+                  {project.data.github && (
+                    <a href={project.data.github} target="_blank" rel="noopener">github →</a>
+                  )}
+                  {project.data.demo && (
+                    <a href={project.data.demo} target="_blank" rel="noopener">demo →</a>
+                  )}
+                </div>
+              </div>
+              <p class="project-full-desc">{project.data.description}</p>
+              <div class="project-full-highlights">
+                <Content />
+              </div>
+              <div class="project-tags">
+                {project.data.tags.map(tag => (
+                  <span class="tag">{tag}</span>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+
+        <div class="project-placeholder">more projects incoming...</div>
+      </section>
+
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .project-full-highlights :global(p) {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin-bottom: 12px;
+  }
+  .project-full-highlights :global(ul) {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .project-full-highlights :global(li) {
+    font-size: 0.85rem;
+    color: var(--text);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .project-full-highlights :global(li)::before {
+    content: '>';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    top: 2px;
+  }
+  .project-full-highlights :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--accent);
+  }
+</style>

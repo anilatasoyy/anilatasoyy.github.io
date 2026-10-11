@@ -1,0 +1,16 @@
+---
+interface Props {
+  active?: 'home' | 'projects' | 'contact';
+}
+const { active } = Astro.props;
+---
+<nav>
+  <div class="container">
+    <a href="/" class="nav-logo">Anil Atasoy</a>
+    <ul class="nav-links">
+      <li><a href="/" class:list={[{ active: active === 'home' }]}>home</a></li>
+      <li><a href="/projects" class:list={[{ active: active === 'projects' }]}>projects</a></li>
+      <li><a href="/#contact" class:list={[{ active: active === 'contact' }]}>contact</a></li>
+    </ul>
+  </div>
+</nav>
