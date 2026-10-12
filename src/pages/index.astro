@@ -3,7 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import TerminalHero from '../components/TerminalHero.astro';
-import ContactForm from '../components/ContactForm.astro';
 import { getCollection } from 'astro:content';
 
 const allProjects = await getCollection('projects');
@@ -121,7 +120,7 @@ const featured = allProjects
           Open to opportunities in low-latency systems, HFT infrastructure, and
           robotics/embedded roles. Reach out directly.
         </p>
-        <ContactForm />
+        <a href="mailto:anilatasoy090201@gmail.com" class="btn btn-primary">send email</a>
       </section>
 
     </div>
